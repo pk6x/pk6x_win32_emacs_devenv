@@ -1,3 +1,5 @@
+(((( It is very important to run Emacs from the cmd shell that has been set up to run MSVC compiler "vsvarcall.bat" or other environments "vcvars64"etc in order to compile the C/C++ code.))))
+
 This setup is 99.9% inspired by Casey Muratori who created the handmadehero series. 
 
 w32_emacs_dev is a way to setup a C/C++ dev environment using Emacs as the code editor on Windows and your choice of C/C++ compiler toolkit (In this setup, it uses the MSVC compiler "cl") (it is also recommended to use other debugging tool alongside, e.g MSVC debugger).
