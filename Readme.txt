@@ -1,27 +1,43 @@
-(((( It is very important to run Emacs from the cmd shell that has been set up to run MSVC compiler "vsvarcall.bat" or other environments "vcvars64"etc in order to compile the C/C++ code.))))
+(((( It is very important to run Emacs from the cmd shell that has got "vcvarsall.bat" called and running , or any other Visual Studio Tools Prompt Command x64 or x86 etc, in order to be able compile the C/C++ code from Emacs.)))) In other words, if you try to run Emacs from a normal cmd shell or other normal shells, Emacs will complain that "cl" is not recognized as as internal or external command, operable program or batch file. 
 
-This setup is 99.9% inspired by Casey Muratori who created the handmadehero series. 
+You can also set a new value in the path variable that is in the Environment Variables on Windows pointed to where "cl.exe" exists after installing Microsoft Visual Studio so all shells can recognize the "cl" command and invoke the MSVC compiler. 
 
-w32_emacs_dev is a way to setup a C/C++ dev environment using Emacs as the code editor on Windows and your choice of C/C++ compiler toolkit (In this setup, it uses the MSVC compiler "cl") (it is also recommended to use other debugging tool alongside, e.g MSVC debugger).
+If you are running other operating system like Linux or Macox, then using other compilers is the way to go, like LLVM clang or GCC compiler.
 
-Cmd or Command Prompt must be the shell you use here as MSVC toolkit, at least at the time of writing, make use of that shell only to run their tools. So be aware of using other shell environments like powershell for example. That wont run. 
+This guide is mainly focused on how to setup the Emacs compiling C/C++ code on Windows machines only. 
 
-Setting up the environment consist of couple of steps to follow. 
+This setup is 99.9% inspired by Casey Muratori who created the handmadehero series. Credit goes to him for sure.  
+
+win32_emacs_devenv is a way to compile C/C++ code from a build.bat file on Emacs without using other build systems like CMake or Make or Ninja etc and without using other IDEs for compiling like Microsoft Visual Studio or CLion etc.  
+(However, this setup uses the MSVC compiler "cl". It is also recommended to use other debugging tool alongside, e.g MSVC debugger).
+
+Cmd, or Command Prompt, must be the shell you use here to run MSVC builds (like vcvasall.bat or vcvars64.bat). At the time of writing, other shell environments like powershell for example wont work with MSVC builds.  
+
+Setting up this environment consist of 4 of steps to follow. 
 
 So, before starting, make sure (Microsoft Visual Studio) and (Emacs) are both installed on your Windows machine.
 
-Now, to begin:
+Note #1: 
+All files can be renamed to whatever you like, just make sure to also make the corresponding changes to match your new naming in this guide. 
+
+Note #2:
+You can skip step #1 if you don't wish to substitute other drives you have on your system. 
 
 
+Now, to start:
 
 
+1- First, go to the Startup folder on Windows by typing "shell:startup" using "Run" and paste "subst_drive.bat file in there. This way, this .bat file will get invoked automatically when Windows booted.
 
+The "subst_drive.bat" file and what it does is just to allow Windows to substitute a virtual drive letter for another drive letter on your system. The substed drive in this setup took the initial letter "w:". You can choose other letter that you like and point it to other location in your drive on your system. 
 
-First, go to the Startup folder on Windows by typing "shell:startup" using "Run" and paste "subst_drive.bat) file there. This way, this .bat file will get invoked automatically when Windows booted.
+For example: 
 
-The "subst_drive.bat" file what it does is just to tell Windows to create a new drive that is derived from your choice of physical drive that exists in your system. The substed drive in the setup took the initial "w:" but you can change it but you must also change wherever you see w: to the one you have chosen to be the substed drive. 
+subst w: d:/dev
 
-subst w: d:/dev 
+where "w:" is the new substituted virtual drive I would like to have.
+
+and "d:/dev" is the actual drive is on my system and point it to /dev subdir only and not the entire d: global drive. As I said you choose other subdirs or nothing or to not even substitute a drive and skip this step in its entirety.  
 
 Now, a new drive should appear on your Windows system in the Explorer.exe for example, or cd to it using "cmd".
 
@@ -36,7 +52,7 @@ Now, a new drive should appear on your Windows system in the Explorer.exe for ex
 
 
 
-Then, go to your project main dir into "misc" folder and paste "shell.bat" file in there. 
+2- Then, go to your project main dir into "misc" folder and paste "shell.bat" file in there. 
 
 You can  create your project folder to have at least this structure: You don't have to as everything can be located wherever you like, just make sure you make the right changes in the locations used here. This structure is only a guide. 
 
@@ -55,22 +71,23 @@ For example, your project folder could be structured simply this way:
 	|
 	|__> shell.bat
 
-You can definitely name the misc folder to other name too, the only thing to be aware of is to make the corresponding changes as well wherever you see "misc" mentioned to your new naming.
 
-shell.bat file job is first to run "vcvarsall.bat" (x64 in this setup, but you can choose x86 for 32-bit applications) so the local cmd shell you are running will have MSVC compiler up and running. Other cmd shells will not have that if you try to. Second job is to set a new value in the path variable to where this shell.bat is located. (set path=W:\project_dir\misc;%path% 
-
+shell.bat file job is first to run "vcvarsall.bat" MSVC build (x64 in this setup, but you can choose x86 for 32-bit cpu architecture) so the local cmd shell you are running will have MSVC compiler up and running. Other cmd shells will not have that if you try to. Second job is to set a new value in the path variable to where this shell.bat is located. (set path=W:\project_dir\misc;%path% 
 
 
 
 
 
-Then, paste a copy of Command Prompt on Desktop (you can rename this copy to whatever your like, here I named to "w32_emacs_dev")
+
+3- Then, paste a copy of Command Prompt on Desktop (you can rename this copy to whatever your like, here I named to "win32_emacs_devenv").
+
+By doing so, after windows has booted I can now run this cmd shell and everything sill be setup for me and I run Emacs from this shell only. 
  
 -Windows
 	|
 	|__> Desktop
 		|
-		|__> Command Prompt shortcut (w32_emacs_dev)
+		|__> Command Prompt shortcut (win32_emacs_devenv)
 
 Now go to Properties and set the both values of "Target" and "Start in" as shown in the picture.
 
@@ -82,14 +99,12 @@ The "Start in" value is sat to the desired drive of choice, in this case is sat 
 
 This way, this local scoped environment of Command Prompt will start at that desired location, eg w:\ in this example
 
-w:\ subst drive should already been sat from that .bat file that is (subst_drive.bat).
 
 
 
 
 
-
-Then, paste the "build.bat" file into your project main folder or any other sub-folders (here I have located in a sub-folder "code")
+4- Then, paste the "build.bat" file into your project main folder or any other sub-folders (here I have located in a sub-folder "code")
 
 -project main folder
 	|
@@ -108,12 +123,12 @@ In this specific build.bat file is written this way:
 @echo off
 mkdir ..\build (This will create a new folder named "build")
 pushd ..\build (This will mark the current dir to go back to after finishing whatever comes next)
-cl ..\..\project_dir\code\main.cpp (compiling)
+cl ..\..\project_dir\code\main.cpp (plus other options and flags you like to add) (compiling)
 popd (Will return back to where the .cpp file is, the one was marked by pushd before)
 
-The way Emacs know how to run the build.bat is how it was setup first in the init.el file. (Thanks to Casey Muratori and how he wrote it)
+The way Emacs know how to run the build.bat is how it was setup in the init.el file.
 
-So Emacs now can not only know where to look for build.bat file but also can determine the underlying operating system to look for the file.
+So Emacs now not only can know where to look for build.bat file but also can determine the underlying operating system to look for the file.
 
 /* Emacs Casey's setup for C/C++ compilation
 
