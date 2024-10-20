@@ -530,3 +530,4 @@ Copy and paste in the "init.el" located inside .emacs.d folder in Romaing in App
     (set-variable 'grep-command "findstr -s -n -i -l "))
 ;; //////////////////////////////// End of "From Casey Muratori (C/C++ style and compilation)"
 
+
