@@ -13,7 +13,7 @@ win32_emacs_devenv is a way to compile C/C++ code from a build.bat file on Emacs
 
 Cmd, or Command Prompt, must be the shell you use here to run MSVC builds (like vcvasall.bat or vcvars64.bat). At the time of writing, other shell environments like powershell for example wont work with MSVC builds.  
 
-Setting up this environment consist of 4 of steps to follow. 
+Setting up this environment consist of 5 of steps to follow. 
 
 So, before starting, make sure (Microsoft Visual Studio) and (Emacs) are both installed on your Windows machine.
 
@@ -129,6 +129,26 @@ popd (Will return back to where the .cpp file is, the one was marked by pushd be
 The way Emacs know how to run the build.bat is how it was setup in the init.el file.
 
 So Emacs now not only can know where to look for build.bat file but also can determine the underlying operating system to look for the file.
+
+
+
+
+
+
+5- To debug the .exe file on Microsoft Visual Studio is to run the simply open the .exe file on Microsoft Visual Studio and once it's run press F11 to step into the file. After that save the .sln file that got generated in build folder or other location you like.
+
+This can also be achieved by typing the command "devenv" and this will launch Microsoft Visual Studio and suffix it with the .exe file you wish to open.
+
+For example:
+
+devenv w:\project_dir\build\file.exe 
+
+
+
+
+
+
+
 
 /* Emacs Casey's setup for C/C++ compilation
 
